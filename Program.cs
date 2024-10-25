@@ -28,14 +28,13 @@ namespace személyazonosító
             return int.Parse(azonosito.Substring(7, 3));
         }
 
-        // Életkor kiszámítása
+
         static int GetAge(DateTime birthDate)
         {
             int currentYear = DateTime.Now.Year;
             return currentYear - birthDate.Year;
         }
 
-        // Ellenőrző szám (11. jegy) kiszámítása
         static string CalculateChecksum(string azonosito)
         {
             int[] weights = { 9, 8, 7, 6, 5, 4, 3, 2, 1, 1 };
@@ -54,7 +53,45 @@ namespace személyazonosító
 
         static void Main()
         {
+            Console.Write("Adja meg az első személyazonosító jel első 10 jegyét: ");
+            string azonosito1 = Console.ReadLine();
 
+            Console.WriteLine("Nem: " + GetGender(azonosito1));
+
+
+            Console.WriteLine("Születési sorszám: " + GetBirthOrder(azonosito1));
+
+
+            DateTime birthDate1 = GetBirthDate(azonosito1);
+            Console.WriteLine("Ebben az évben betöltött életkor: " + GetAge(birthDate1));
+
+            Console.Write("Adja meg a második személyazonosító jel első 10 jegyét: ");
+            string azonosito2 = Console.ReadLine();
+
+
+            DateTime birthDate2 = GetBirthDate(azonosito2);
+            if (birthDate1 < birthDate2 || (birthDate1 == birthDate2 && GetBirthOrder(azonosito1) < GetBirthOrder(azonosito2)))
+            {
+                Console.WriteLine("Az első személy idősebb.");
+            }
+            else
+            {
+                Console.WriteLine("A második személy idősebb.");
+            }
+
+
+            int ageDifference = Math.Abs(birthDate1.Year - birthDate2.Year);
+            Console.WriteLine("Születési évek közötti különbség: " + ageDifference);
+
+            string checksum = CalculateChecksum(azonosito2);
+            if (checksum == "hibás a születési sorszám")
+            {
+                Console.WriteLine(checksum);
+            }
+            else
+            {
+                Console.WriteLine("A teljes személyazonosító jel: " + azonosito2 + checksum);
+            }
         }
     }
 }
